@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+
+    <xs:element name="knife_shop">
+        <xs:complexType mixed="true">
+            <xs:sequence>
+                <xs:element name="knife" maxOccurs="unbounded">
+                    <xs:complexType mixed="true">
+                        <xs:sequence>
+                            <xs:element ref="name"/>
+                            <xs:element ref="type"/>
+                            <xs:element ref="handy"/>
+                            <xs:element ref="origin"/>
+                            <xs:element ref="visual_parameters"/>
+                            <xs:element ref="value"/>
+                        </xs:sequence>
+                        <xs:attribute name="id" use="required"/>
+                    </xs:complexType>
+                </xs:element>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <!-- definition of simple elements -->
+    <xs:element name="name">
+        <xs:simpleType>
+            <xs:restriction base="xs:string">
+                <xs:pattern value="[a-zA-Z]+"/>
+            </xs:restriction>
+        </xs:simpleType>
+    </xs:element>
+
+    <xs:element name="type">
+        <xs:simpleType>
+            <xs:restriction base="xs:string">
+                <xs:enumeration value="knife"/>
+                <xs:enumeration value="dagger"/>
+                <xs:enumeration value="sword"/>
+                <xs:enumeration value="ax"/>
+            </xs:restriction>
+        </xs:simpleType>
+    </xs:element>
+
+    <xs:element name="handy">
+        <xs:simpleType>
+            <xs:restriction base="xs:string">
+                <xs:pattern value="one-handed|two-handed"/>
+            </xs:restriction>
+        </xs:simpleType>
+    </xs:element>
+
+    <xs:element name="origin">
+        <xs:simpleType>
+            <xs:restriction base="xs:string">
+                <xs:pattern value="[a-zA-Z]+"/>
+            </xs:restriction>
+        </xs:simpleType>
+    </xs:element>
+
+    <xs:element name="length">
+        <xs:simpleType>
+            <xs:restriction base="xs:integer">
+                <xs:minInclusive value="10"/>
+                <xs:maxExclusive value="300"/>
+            </xs:restriction>
+        </xs:simpleType>
+    </xs:element>
+
+    <xs:element name="width">
+        <xs:simpleType>
+            <xs:restriction base="xs:integer">
+                <xs:minInclusive value="10"/>
+                <xs:maxInclusive value="300"/>
+            </xs:restriction>
+        </xs:simpleType>
+    </xs:element>
+
+    <xs:element name="material">
+        <xs:simpleType>
+            <xs:restriction base="xs:string">
+                <xs:pattern value="[a-zA-Z]+"/>
+            </xs:restriction>
+        </xs:simpleType>
+    </xs:element>
+
+    <xs:element name="handle">
+        <xs:simpleType>
+            <xs:restriction base="xs:string">
+                <xs:enumeration value="plastic"/>
+                <xs:enumeration value="metal"/>
+                <xs:enumeration value="wood"/>
+            </xs:restriction>
+        </xs:simpleType>
+    </xs:element>
+
+    <xs:element name="bloodstream_presence">
+        <xs:simpleType>
+            <xs:restriction base="xs:string">
+                <xs:pattern value="Yes|No"/>
+            </xs:restriction>
+        </xs:simpleType>
+    </xs:element>
+
+    <xs:element name="value">
+        <xs:simpleType>
+            <xs:restriction base="xs:string">
+                <xs:pattern value="collectible|non-collectible"/>
+            </xs:restriction>
+        </xs:simpleType>
+    </xs:element>
+
+    <!-- definition of complex elements -->
+    <xs:element name="visual_parameters">
+    <xs:complexType>
+        <xs:sequence>
+            <xs:element ref="length"/>
+            <xs:element ref="width"/>
+            <xs:element ref="material"/>
+            <xs:element ref="handle"/>
+            <xs:element ref="bloodstream_presence"/>
+        </xs:sequence>
+    </xs:complexType>
+    </xs:element>
+
+
+
+</xs:schema>
