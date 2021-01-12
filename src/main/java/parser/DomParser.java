@@ -29,7 +29,7 @@ public class DomParser {
             if(knifeNodeList.item(i).getNodeType() == Node.ELEMENT_NODE){
                 Element knifeElement = (Element) knifeNodeList.item(i);
 
-                Knife knife = new Knife(new VisualParameters());
+                Knife knife = new Knife();
                 knife.setId(Integer.parseInt(knifeElement.getAttribute("id")));
 
                 NodeList knifeChildNodes = knifeElement.getChildNodes();
@@ -47,41 +47,52 @@ public class DomParser {
                             case "origin" : {
                                 knife.setOrigin(childElement.getTextContent()); }
                             case "visual_parameters" :{
-
-                                NodeList visParChildNodes = childElement.getChildNodes();
-                                for (int k=0; k<visParChildNodes.getLength(); k++){
-                                    if(visParChildNodes.item(k).getNodeType() == Node.ELEMENT_NODE){
-                                        Element visChildElement = (Element) visParChildNodes.item(k);
-
-                                        switch (visChildElement.getNodeName()){
-                                            case "length" : {
-                                                knife.getVisualParameters().setLength(Integer.parseInt(visChildElement.getTextContent())); }
-                                            case "width" : {
-                                                knife.getVisualParameters().setWidth(Integer.parseInt(visChildElement.getTextContent())); }
-                                            case "material" : {
-                                                knife.getVisualParameters().setMaterial(visChildElement.getTextContent()); }
-                                            case "handle" : {
-                                                knife.getVisualParameters().setHandle(visChildElement.getTextContent()); }
-                                            case "bloodstream_presence" : {
-                                                if (visChildElement.getTextContent().equals("Yes")){
-                                                    knife.getVisualParameters().setBloodstreamPresence(true); }
-                                                else {
-                                                    knife.getVisualParameters().setBloodstreamPresence(false); }
-                                            }
-                                        }
-                                    }
-                                }
-                            }
+                                VisualParameters vs = parseVisualParameters(file, i);
+                                knife.setVisualParameters(vs);}
                             case "value" : {
-                                knife.setValue(childElement.getTextContent());
-                            }
+                                knife.setValue(childElement.getTextContent()); }
+
                         }
                     }
                 }
-
                 knifeList.add(knife);
             }
         }
         return knifeList;
+    }
+
+    static VisualParameters parseVisualParameters(File file, int k) throws ParserConfigurationException, IOException, SAXException {
+        DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+        DocumentBuilder builder = factory.newDocumentBuilder();
+        Document document = builder.parse(file);
+
+        NodeList visualParametersNodeList = document.getElementsByTagName("visual_parameters");
+
+        VisualParameters visualParameters = new VisualParameters();
+
+            if(visualParametersNodeList.item(k).getNodeType() == Node.ELEMENT_NODE){
+                Element visualParametersElement = (Element) visualParametersNodeList.item(k);
+                NodeList childNodes = visualParametersElement.getChildNodes();
+                for (int y = 0; y<childNodes.getLength(); y++) {
+                    if (childNodes.item(y).getNodeType() == Node.ELEMENT_NODE){
+                        Element childElement = (Element) childNodes.item(y);
+
+                        switch (childElement.getNodeName()) {
+                            case "length": {
+                                visualParameters.setLength(Integer.parseInt(childElement.getTextContent()));}
+                            case "width": {
+                                visualParameters.setWidth(Integer.parseInt(childElement.getTextContent()));}
+                            case "material": {
+                                visualParameters.setMaterial(childElement.getTextContent());}
+                            case "handle": {
+                                visualParameters.setHandle(childElement.getTextContent());}
+                            case "bloodstream_presence": {
+                                visualParameters.setBloodstreamPresence(childElement.getTextContent().equalsIgnoreCase("Yes"));}
+                        }
+                    }
+                }
+            }
+
+        return visualParameters;
     }
 }
